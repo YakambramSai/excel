@@ -18,8 +18,8 @@ public class ScmpController {
 	
 	@GetMapping("/version/{scmpNumber}")
 	public  Long  getScmpVersion(@PathVariable String scmpNumber) {
-		scmpService.loadMap();
-		Long versionNumber=scmpService.getScmpVersion(scmpNumber);
+		scmpService.initialize();
+		Long versionNumber=scmpService.get(scmpNumber);
 		return versionNumber;
 		
 	}
@@ -27,28 +27,9 @@ public class ScmpController {
 	
 	@PutMapping("/version/{scmpNumber}/{versionNumber}")
 	public boolean verifyScmpVersion(@PathVariable String scmpNumber, @PathVariable Long versionNumber) {
-		
-		Long exstingVersion =null;
-		boolean flag= false;
-	//	scmpService.loadMap();
-		exstingVersion=scmpService.getScmpVersion(scmpNumber);
-		if(exstingVersion==null) {
-			return false;
-		}
-		
-       else if(exstingVersion!=null && exstingVersion.equals(versionNumber)) {
-			scmpService.addVersionNumber(scmpNumber, versionNumber);
-			flag =true;
- 		}else if(exstingVersion < versionNumber) {
-			scmpService.updateVersionNumber(scmpNumber, versionNumber);
-			flag = true;
-		}
-		
-		
-		
-		
-		return flag;
-		
+	    Long v=scmpService.insert(scmpNumber, versionNumber);
+	    System.out.println(v);
+		return true;
 	}
 
 }
